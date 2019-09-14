@@ -31,8 +31,38 @@ namespace WebApp.SamplePages
             ArtistList.DataTextField = nameof(Artist.Name);
             ArtistList.DataValueField = nameof(Artist.ArtistId);
             ArtistList.DataBind();
-            ArtistList.Items.Insert(0, "selct ...");
+            //ArtistList.Items.Insert(0, "select ...");
             // this works too ArtistList.DataValueField = "ArtistId";
+
+        }
+
+        protected void AlbumList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Standard lookup
+            GridViewRow agvrow = AlbumList.Rows[AlbumList.SelectedIndex];
+            //Need to retrieve the value from a Web Control located within the gridview cell
+            string albumid = (agvrow.FindControl("AlbumId") as Label).Text;
+
+            //Time being, error handling will need to be added
+
+            AlbumController sysmgr = new AlbumController();
+            Album datainfo = sysmgr.Album_Get(int.Parse(albumid));
+            if(datainfo == null)
+            {
+                //clear the controls
+                //throw an exception
+                
+            }
+            else
+            {
+                EditAlbumID.Text = datainfo.AlbumId.ToString();
+                EditTitle.Text = datainfo.Title;
+                EditAlbumArtistList.SelectedValue = datainfo.ArtistId.ToString();
+                EditReleaseYear.Text = datainfo.ReleaseYear.ToString();
+                EditReleaseLabel.Text =
+                    datainfo.ReleaseLabel == null ? "" : datainfo.ReleaseLabel;
+            }
+
 
         }
     }
