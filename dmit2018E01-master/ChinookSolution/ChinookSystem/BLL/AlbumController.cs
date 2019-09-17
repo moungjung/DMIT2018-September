@@ -40,7 +40,7 @@ namespace ChinookSystem.BLL
                                   where x.ArtistId == artistid
                                   select x;
 
-
+                
                     return results.ToList();
                 }
             }
