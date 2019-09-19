@@ -83,7 +83,117 @@ namespace WebApp.SamplePages
 
         private void ClearControls()
         {
-            throw new NotImplementedException();
+            EditAlbumID.Text = "";
+            EditTitle.Text = "";
+            EditReleaseYear.Text = "";
+            EditReleaseLabel.Text = "";
+            EditAlbumArtistList.SelectedIndex = 0;
+
+        }
+
+        protected void Add_Click(object sender, EventArgs e)
+        {
+            if(Page.IsValid)
+            {
+                string albumtitle = EditTitle.Text;
+                int albumyear = int.Parse(EditReleaseYear.Text);
+                string albumlabel = EditReleaseLabel.Text == "" ? 
+                    null : EditReleaseLabel.Text;
+                int albumartist = int.Parse(EditAlbumArtistList.SelectedValue);
+
+                Album theAlbum = new Album();
+                theAlbum.Title = albumtitle;
+                theAlbum.ArtistId = albumartist;
+                theAlbum.ReleaseYear = albumyear;
+                theAlbum.ReleaseLabel = albumlabel;
+
+                MessageUserControl.TryRun(() =>
+                {
+                    AlbumController sysmgr = new AlbumController();
+                    int albumid = sysmgr.Album_Add(theAlbum);
+                    EditAlbumID.Text = albumid.ToString();
+                    if(AlbumList.Rows.Count > 0)
+                    {
+                        AlbumList.DataBind(); //Re-execute the ODS for the Album List
+                    }
+                },"Successful", "Album added");
+
+
+            }
+
+        }
+
+        protected void Update_Click(object sender, EventArgs e)
+        {
+            if (Page.IsValid)
+            {
+                string albumid = EditAlbumID.Text;
+                int editalbumid = 0;
+                if (string.IsNullOrEmpty(albumid))
+                {
+                    MessageUserControl.ShowInfo("Attention","Lookup the album before editing, idiot");
+                }
+                else if (!int.TryParse(albumid, out editalbumid))
+                {
+                    MessageUserControl.ShowInfo("Attention","Current AlbumID is invalid, idiot");
+                }
+                else
+                {
+
+                    Album theAlbum = new Album();
+                    theAlbum.AlbumId = editalbumid; //include pkey
+                    theAlbum.Title = EditTitle.Text;
+                    theAlbum.ArtistId = int.Parse(EditAlbumArtistList.SelectedValue);
+                    theAlbum.ReleaseYear = int.Parse(EditReleaseYear.Text);
+                    theAlbum.ReleaseLabel = EditReleaseLabel.Text == "" ? null : EditReleaseLabel.Text;
+
+                    MessageUserControl.TryRun(() =>
+                    {
+                        AlbumController sysmgr = new AlbumController();
+                        int rowsaffected = sysmgr.Album_Update(theAlbum);
+                        if (rowsaffected > 0)
+                        {
+                            AlbumList.DataBind(); //Re-execute the ODS for the Album List
+                        }
+                        else
+                        {
+                            throw new Exception("Album was not found. Repeat lookup and update again.");
+                        }
+                    }, "Successful", "Album updated");
+                }
+
+
+            }
+        }
+
+        protected void Remove_Click(object sender, EventArgs e)
+        {
+            string albumid = EditAlbumID.Text;
+            int editalbumid = 0;
+            if (string.IsNullOrEmpty(albumid))
+            {
+                MessageUserControl.ShowInfo("Attention", "Lookup the album before editing, idiot");
+            }
+            else if (!int.TryParse(albumid, out editalbumid))
+            {
+                MessageUserControl.ShowInfo("Attention", "Current AlbumID is invalid, idiot");
+            }
+            else
+            {
+                MessageUserControl.TryRun(() =>
+                {
+                    AlbumController sysmgr = new AlbumController();
+                    int rowsaffected = sysmgr.Album_Delete(editalbumid);
+                    if (rowsaffected > 0)
+                    {
+                        AlbumList.DataBind(); //Re-execute the ODS for the Album List
+                    }
+                    else
+                    {
+                        throw new Exception("Album was not found. Repeat lookup and delete again.");
+                    }
+                }, "Successful", "Album deleted");
+            }
         }
     }
 }
