@@ -187,6 +187,7 @@ namespace WebApp.SamplePages
                     if (rowsaffected > 0)
                     {
                         AlbumList.DataBind(); //Re-execute the ODS for the Album List
+                        EditAlbumID.Text = "";
                     }
                     else
                     {

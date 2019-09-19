@@ -13,7 +13,7 @@
 
         <uc1:MessageUserControl runat="server" ID="MessageUserControl" />
 
-        <!-- Validation contorls -->
+        <!-- Validation controls -->
         <asp:RequiredFieldValidator ID="RequiredFieldEditTitle" runat="server" ErrorMessage="Title Field is required" Display="None" 
             ForeColor="Firebrick" SetFocusOnError="true" ControlToValidate="EditTitle"></asp:RequiredFieldValidator>
         <asp:RequiredFieldValidator ID="RequiredFieldEditReleaseYear" runat="server" ErrorMessage="Year field is required" Display="None" 
@@ -81,7 +81,7 @@
         <br />
         <asp:LinkButton ID="Add" runat="server" OnClick="Add_Click" >Add</asp:LinkButton> &nbsp;&nbsp;
         <asp:LinkButton ID="Update" runat="server" OnClick="Update_Click" >Update</asp:LinkButton> &nbsp;&nbsp;
-        <asp:LinkButton ID="Remove" runat="server" CausesValidation="false" OnClick="Remove_Click">Remove</asp:LinkButton>
+        <asp:LinkButton ID="Remove" runat="server" CausesValidation="false" OnClick="Remove_Click" OnClientClick="return confirm('Are you sure you want to remove this album from the collection?')">Remove</asp:LinkButton>
     </div>
 
     <asp:ObjectDataSource ID="AlbumListODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="Album_FindByArtist" TypeName="ChinookSystem.BLL.AlbumController" 
