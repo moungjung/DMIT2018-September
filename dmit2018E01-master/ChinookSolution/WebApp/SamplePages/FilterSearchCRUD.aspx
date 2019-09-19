@@ -74,7 +74,7 @@
          <asp:Label ID="label5" runat="server" Text="Year:"></asp:Label>
         &nbsp;&nbsp;
         <asp:TextBox ID="EditReleaseYear" runat="server"></asp:TextBox>
-        <br />
+        <br /> 
          <asp:Label ID="label6" runat="server" Text="Label:"></asp:Label>
         &nbsp;&nbsp;
         <asp:TextBox ID="EditReleaseLabel" runat="server" MaxLength="50"></asp:TextBox>
